@@ -7,6 +7,10 @@ exports.sendTransaction = async (fromPrivateKey, toPublicKey, amount) => {
         const fromKeypair = Keypair.fromSecretKey(Buffer.from(fromPrivateKey, 'base64'));
         const toPubKey = new PublicKey(toPublicKey);
 
+        if (isNaN(amount) || amount <= 0) {
+            throw new Error('Invalid amount specified');
+        }
+
         const transaction = new Transaction().add(
             SystemProgram.transfer({
                 fromPubkey: fromKeypair.publicKey,
